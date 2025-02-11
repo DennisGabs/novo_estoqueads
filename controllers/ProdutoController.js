@@ -10,6 +10,8 @@ class ProdutoController {
             }
         });
 
+        req.flash('success_msg', 'Produtos listados')
+
         res.render('produto/index', {produtos: produtos});
     }
 

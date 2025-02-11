@@ -26,5 +26,5 @@ Usuario.belongsTo(Pessoa, {
     constraint: true,
     as: 'pessoa'
 })
-
+Usuario.sync()
 export default Usuario

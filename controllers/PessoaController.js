@@ -1,5 +1,7 @@
 import Pessoa from "../models/Pessoa.js";
 import {Op} from "sequelize";
+import Usuario from "../models/Usuario.js";
+import bcrypt from 'bcryptjs'
 
 class PessoaController {
      index = function (req, res) {
@@ -24,7 +26,8 @@ class PessoaController {
         })
 
         if(pessoa){
-            res.redirect('/pessoa/cadastro')
+            req.flash('error_msg', 'Usuário já cadastrado!')
+            res.redirect('/pessoa/cadastrar')
         }else{
             let novo = {
                 nome: req.body.nome,
@@ -34,6 +37,25 @@ class PessoaController {
                 status: 1
             }
             Pessoa.create(novo).then(function(pessoa) {
+                let novoUsuario = {
+                    login: pessoa.email,
+                    senha: preq.body.senha,
+                    categoria: 0,
+                    status: 1,
+                    pessoa_id: pessoa.id
+                }
+
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(novoUsuario.senha, salt, (err, hash) => {
+                        novoUsuario.senha = hash
+                        Usuario.create(novoUsuario).then(()=> {
+                            req.flash('success_msg', 'Cliente cadastrado com sucesso!')
+                            res.redirect('/usuario/login')
+                        })
+                    })
+                })
+
+
                 res.redirect('/pessoa')
             })
         }

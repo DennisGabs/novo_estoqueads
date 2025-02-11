@@ -27,4 +27,6 @@ const Pessoa = banco.sequelize.define('pessoas', {
     }
 })
 
+Pessoa.sync()
+
 export default Pessoa
