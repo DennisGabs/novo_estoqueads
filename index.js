@@ -9,6 +9,8 @@ import { fileURLToPath } from 'url';
 import { allowInsecurePrototypeAccess} from "@handlebars/allow-prototype-access";
 import session from 'express-session';
 import flash from 'connect-flash';
+import passport from 'passport';
+
 
 ////////////////////////
 //CONFIGURAÇÕES
@@ -20,11 +22,15 @@ app.use(session({
     saveUninitialized: false
 }))
 
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash())
 
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('sucess_msg')
     res.locals.error_msg = req.flash('error_msg')
+    res.locals.error = req.flash('error')
+    res.locals.usuario = req.user || null
     next()
 })
 

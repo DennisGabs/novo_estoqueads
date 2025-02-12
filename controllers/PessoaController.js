@@ -39,7 +39,7 @@ class PessoaController {
             Pessoa.create(novo).then(function(pessoa) {
                 let novoUsuario = {
                     login: pessoa.email,
-                    senha: preq.body.senha,
+                    senha: req.body.senha,
                     categoria: 0,
                     status: 1,
                     pessoa_id: pessoa.id
